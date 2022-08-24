@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 import store from '@/store'
 import { getTimeStamp } from '@/utils/auth'
 import router from '@/router'
-const TimeOut = 2 // 设置超时时间
+const TimeOut = 3600 // 设置超时时间
 // create an axios instance
 const service = axios.create({
   // 如果执行 npm run dev  值为 /api 正确  /api 这个代理只是给开发环境配置的代理
@@ -12,15 +12,15 @@ const service = axios.create({
   // 设置axios请求的基础的基础地址
   timeout: 5000 // 定义5秒超时
 })
-// request interceptor
-service.interceptors.request.use(config => {
+// // request interceptor
+service.interceptors.request.use(async config => {
   // 有token
   if (store.getters.token) {
     // 判断token的时间戳是否超时
-    if (IsCheckTimeOut) {
-      store.dispatch('modules/user') // 退出登录
+    if (IsCheckTimeOut()) {
+      await store.dispatch('user/logout') // 退出登录
       router.push('/login') // 跳转登录页
-      return Promise.reject(new Error('token超时了'))
+      return Promise.reject(new Error('token超时了ya'))
     }
     config.headers['Authorization'] = `Bearer ${store.getters.token}`
   }
@@ -28,6 +28,7 @@ service.interceptors.request.use(config => {
 }, error => {
   return Promise.reject(error)
 })
+
 // response interceptor
 service.interceptors.response.use(response => {
   const { success, message, data } = response.data

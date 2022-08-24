@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 const TokenKey = 'hrsaas-ihrm-token' // 任意 设定一个独一无二的key
-const TimeStamp = 'hrsaas-timestamo-key'
+const TimeKey = 'hrsaas-timestamp-key'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -16,9 +16,9 @@ export function removeToken() {
 }
 
 export function getTimeStamp() {
-  return Cookies.get(TimeStamp)
+  return Cookies.get(TimeKey)
 }
 
 export function setTimeStamp() {
-  return Cookies.set(TimeStamp, Date.now())
+  return Cookies.set(TimeKey, Date.now())
 }
