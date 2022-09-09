@@ -16,6 +16,9 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
 
+import Component from '@/components'
+import * as filters from '@/filters'
+
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
@@ -23,7 +26,13 @@ Vue.use(ElementUI, { locale })
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
+// 全局注册过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 Vue.config.productionTip = false
+// 注册自己的插件
+Vue.use(Component)
 
 new Vue({
   el: '#app',
