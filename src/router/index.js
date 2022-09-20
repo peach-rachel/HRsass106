@@ -13,6 +13,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+import userRouter from './modules/user'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -38,16 +39,11 @@ import socialRouter from './modules/social'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 静态路由
 export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
-  },
-
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
     hidden: true
   },
 
@@ -70,11 +66,12 @@ export const constantRoutes = [
     children: [{
       path: '',
       component: () => import('@/views/import')
-    }]
-  },
+    }],
+    userRouter
+  }
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 // 定义一个动态路由变量
 export const asyncRoutes = [
@@ -91,7 +88,8 @@ export const asyncRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes]
+  // routes: [...constantRoutes，asyncRoutes] ，做到权限管理时，动态路由与静态路由解除合并
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()

@@ -12,11 +12,24 @@ router.beforeEach(async(to, from, next) => {
     // 如访问登录页面，直接放行至主页
     if (to.path === '/login') {
       next('/')
-    } else {
+    } else { // 没有token，先获取用户资料
       if (!store.getters.userId) {
-        await store.dispatch('user/getUserInfo')
+        // async修饰的getuserinfo方法return的result可以在此处用await修饰后直接用
+        const { roles } = await store.dispatch('user/getUserInfo')
+        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+        // routes就是筛选得到的动态路由,添加到路由
+        router.addRoutes(
+          [...routes, {
+            path: '/404',
+            component: () => import('@/views/404'),
+            hidden: true
+          }])
+        // router.addRoutes([...routes])
+        // addRoutes  必须 用 next(地址) 不能用next()
+        next(to.path)
+      } else {
+        next() // 直接放行
       }
-      next() // 直接放行
     }
   } else { // 没有token
     // 访问页面是否在白名单

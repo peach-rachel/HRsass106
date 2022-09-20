@@ -12,13 +12,13 @@ const service = axios.create({
   // 设置axios请求的基础的基础地址
   timeout: 5000 // 定义5秒超时
 })
-// // request interceptor
+// // request interceptor 响应拦截器
 service.interceptors.request.use(async config => {
   // 有token
   if (store.getters.token) {
-    // 判断token的时间戳是否超时
+    // 判断token的时间戳是否超时，下面有
     if (IsCheckTimeOut()) {
-      await store.dispatch('user/logout') // 退出登录
+      await store.dispatch('user/logout') // 调用退出登录
       router.push('/login') // 跳转登录页
       return Promise.reject(new Error('token超时了ya'))
     }
@@ -29,7 +29,7 @@ service.interceptors.request.use(async config => {
   return Promise.reject(error)
 })
 
-// response interceptor
+// response interceptor 请求拦截器
 service.interceptors.response.use(response => {
   const { success, message, data } = response.data
   if (success) {
@@ -40,7 +40,7 @@ service.interceptors.response.use(response => {
   }
 }, error => {
   if (error.response && error.response.data && error.response.data.code === 1002) {
-    store.dispatch('modules/user') // 退出登录
+    store.dispatch('user/logout') // 退出登录
     router.push('/login') // 跳转登录页
   } else {
     Message.error(error.message)

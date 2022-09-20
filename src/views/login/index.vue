@@ -71,7 +71,7 @@ export default {
       },
       loginRules: {
         mobile: [{ required: true, trigger: 'blur', message: '手机不能为空' }, { validator: validateMobile, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', message: '手机不能为空' }, { message: '密码的长度在6-16位之间 ', trigger: 'blur' }]
+        password: [{ required: true, trigger: 'blur', message: '密码不能为空' }, { message: '密码的长度在6-16位之间 ', trigger: 'blur' }]
       },
       loading: false,
       passwordType: 'password',

@@ -19,6 +19,8 @@ import * as directives from '@/directives'
 import Component from '@/components'
 import * as filters from '@/filters'
 
+import CheckPermission from '@/mixin/checkPermission'
+
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
@@ -33,6 +35,8 @@ Object.keys(filters).forEach(key => {
 Vue.config.productionTip = false
 // 注册自己的插件
 Vue.use(Component)
+// 注册 混入检查对象mixin
+Vue.mixin(CheckPermission)
 
 new Vue({
   el: '#app',

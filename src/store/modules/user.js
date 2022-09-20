@@ -1,5 +1,6 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
+import { resetRouter } from '@/router'
 const state = {
   // 设置token为共享状态，初始化时先从缓存获取
   token: getToken(),
@@ -47,6 +48,8 @@ const actions = {
   logout(context) {
     context.commit('removeToken') // 清空token
     context.commit('removeUserInfo') // 清空用户信息
+    resetRouter() // 重置路由
+    context.commit('permission/setRoutes', [], { root: true }) // 将permission的路由表初始化
   }
 }
 
